@@ -21,12 +21,12 @@
 
 <br />
 
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5-000000?style=flat-square&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-9-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.IO-4-010101?style=flat-square&logo=socket.io&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-4-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
 
 </div>
 
@@ -69,6 +69,23 @@ Connections
       ▼
 Real-Time Messaging
 ```
+
+---
+
+## Screenshots
+
+<table>
+<tr>
+<td width="50%"><img src="./screenshots/home.png" alt="Home page" /><p align="center"><em>Home</em></p></td>
+<td width="50%"><img src="./screenshots/feed.png" alt="Developer feed" /><p align="center"><em>Feed</em></p></td>
+</tr>
+<tr>
+<td width="50%"><img src="./screenshots/connections.png" alt="Connections page" /><p align="center"><em>Connections</em></p></td>
+<td width="50%"><img src="./screenshots/chat.png" alt="Chat page" /><p align="center"><em>Chat</em></p></td>
+</tr>
+</table>
+
+> Add your actual screenshots to a `screenshots/` folder in the repo root, named to match the paths above (or update the paths to match your own file names).
 
 ---
 
@@ -117,23 +134,26 @@ Real-Time Messaging
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    A[Frontend<br/>React + Vite] -- REST API / HTTPS<br/>JSON + HTTP-only cookie --> B[Backend<br/>Node + Express]
+    B -- REST API / HTTPS --> A
+    A <-- WebSocket / Socket.IO --> B
+    B -- Mongoose ODM --> C[(MongoDB)]
 ```
-┌──────────────────┐        REST API (HTTPS)         ┌──────────────────┐
-│                   │  ─────────────────────────────▶ │                  │
-│    Frontend        │                                 │    Backend        │
-│  React + Vite       │  ◀───────────────────────────  │  Node + Express    │
-│                   │       JSON + HTTP-only cookie    │                  │
-└─────────┬─────────┘                                 └────────┬─────────┘
-          │                                                     │
-          │              WebSocket (Socket.IO)                  │
-          └─────────────────────────────────────────────────────┘
-                                                                  │
-                                                                  ▼
-                                                        ┌──────────────────┐
-                                                        │     MongoDB        │
-                                                        │   (Mongoose ODM)    │
-                                                        └──────────────────┘
+
+> GitHub renders Mermaid diagrams natively in `README.md`. If you're viewing this somewhere that doesn't support Mermaid, see the plain-text version below.
+
+<details>
+<summary>Plain-text version</summary>
+
 ```
+Frontend (React + Vite)  <-- REST API (HTTPS) -->  Backend (Node + Express)
+Frontend (React + Vite)  <-- WebSocket (Socket.IO) -->  Backend (Node + Express)
+Backend (Node + Express) --> MongoDB (Mongoose ODM)
+```
+
+</details>
 
 - **REST API** handles auth, profile, feed, requests, and connections
 - **Socket.IO** handles real-time chat delivery between connected users
@@ -275,6 +295,51 @@ http://localhost:5173
 
 ---
 
+## Contributing
+
+Contributions are welcome. To contribute:
+
+1. **Fork** the repository
+2. **Create a branch** for your feature or fix
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes**, following the existing code style (functional components, DaisyUI/Tailwind classes, existing folder structure)
+4. **Commit** with a clear message
+   ```bash
+   git commit -m "Add: short description of change"
+   ```
+5. **Push** your branch and **open a Pull Request** against `main`, describing what the change does and why
+
+### Guidelines
+
+- Keep pull requests focused — one feature or fix per PR
+- Test your changes locally (both frontend and backend) before submitting
+- Don't commit `.env` files or secrets
+- Be respectful and constructive in code review discussions
+
+### Reporting Issues
+
+Found a bug or have a feature idea? Open an [issue](https://github.com/SanketHajare44/pullRequest/issues) with a clear title and, for bugs, steps to reproduce.
+
+---
+
+## Terms & Conditions
+
+By creating an account or using PullRequest, you agree to the following:
+
+- You must provide accurate profile information and are responsible for maintaining the confidentiality of your account credentials.
+- The platform is intended for professional networking between developers. Harassment, spam, impersonation, or abusive behavior toward other users is not permitted and may result in account suspension.
+- Content you post (profile details, messages) remains yours, but you grant the platform the right to store and display it as needed to provide the service.
+- The platform is provided "as is" during active development — features, availability, and data may change without notice.
+- This is currently a personal/portfolio project and is not intended for production use with sensitive data.
+
+> Replace this section with your own full Terms of Service if the project moves toward public/production use — a generic template like this is a starting point, not a legal document.
+
+---
+
 ## License
 
-This project is available for personal and portfolio use. Add an open-source license here (MIT recommended) if you plan to make the repository public for contributions.
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
+
+In short: you're free to use, copy, modify, and distribute this code (including for commercial purposes), as long as the original copyright notice is included. It's provided without warranty.
