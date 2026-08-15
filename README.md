@@ -28,6 +28,13 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Socket.IO](https://img.shields.io/badge/Socket.IO-4-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
 
+<br />
+
+![License](https://img.shields.io/github/license/SanketHajare44/pullRequest?style=flat-square)
+![Issues](https://img.shields.io/github/issues/SanketHajare44/pullRequest?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/SanketHajare44/pullRequest?style=flat-square)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
+
 </div>
 
 ---
@@ -142,6 +149,8 @@ flowchart LR
     B -- Mongoose ODM --> C[(MongoDB)]
 ```
 
+> GitHub renders Mermaid diagrams natively in `README.md`. If you're viewing this somewhere that doesn't support Mermaid, see the plain-text version below.
+
 <details>
 <summary>Plain-text version</summary>
 
@@ -209,8 +218,6 @@ pullRequest/
 | GET    | `/user/requests/received`          | List incoming connection requests      |
 | GET    | `/user/connections`                | List accepted connections              |
 
-> Adjust routes above to exactly match your backend if they differ.
-
 ### Socket.IO Events
 
 | Event            | Direction        | Description                          |
@@ -218,6 +225,19 @@ pullRequest/
 | `joinChat`         | Client → Server    | Join a chat room with a connection     |
 | `sendMessage`       | Client → Server    | Send a new message                     |
 | `messageReceived`    | Server → Client     | Broadcast a new message to the room    |
+
+---
+
+## Environment Variables
+
+| Variable      | Location  | Description                                  | Example                              |
+|----------------|------------|------------------------------------------------|----------------------------------------|
+| `PORT`          | backend    | Port the Express server runs on               | `3000`                                 |
+| `MONGO_URI`      | backend    | MongoDB connection string                      | `mongodb://localhost:27017/pullrequest` |
+| `JWT_SECRET`      | backend    | Secret used to sign auth tokens                | `a-long-random-string`                 |
+| `BASE_URL`         | frontend   | URL the frontend calls for the API             | `http://localhost:3000`                |
+
+> Never commit real `.env` values — keep a `.env.example` in each folder with placeholder values instead.
 
 ---
 
@@ -286,13 +306,6 @@ http://localhost:5173
 
 ---
 
-## Author
-
-**Sanket Hajare**
-[GitHub](https://github.com/SanketHajare44) · [Live Demo](https://pullrequest-roan.vercel.app)
-
----
-
 ## Contributing
 
 Contributions are welcome. To contribute:
@@ -322,6 +335,22 @@ Found a bug or have a feature idea? Open an [issue](https://github.com/SanketHaj
 
 ---
 
+## FAQ
+
+**Why "PullRequest"?**
+The name plays on the git term — sending a connection request is like opening a pull request, and accepting it "merges" you into each other's connections. It's branding built for a developer audience.
+
+**Does chat work in real time?**
+Yes — messaging uses Socket.IO over WebSockets, so messages appear instantly without needing to refresh.
+
+**Can I run this without MongoDB Atlas?**
+Yes, a local MongoDB instance works fine — just point `MONGO_URI` at your local connection string (e.g. `mongodb://localhost:27017/pullrequest`).
+
+**Is this production-ready?**
+Not yet — see [Terms & Conditions](#terms--conditions) below. It's currently a personal/portfolio project under active development.
+
+---
+
 ## Terms & Conditions
 
 By creating an account or using PullRequest, you agree to the following:
@@ -332,12 +361,35 @@ By creating an account or using PullRequest, you agree to the following:
 - The platform is provided "as is" during active development — features, availability, and data may change without notice.
 - This is currently a personal/portfolio project and is not intended for production use with sensitive data.
 
-> Replace this section with your own full Terms of Service if the project moves toward public/production use — a generic template like this is a starting point, not a legal document.
-
 ---
 
 ## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
 
-In short: you're free to use, copy, modify, and distribute this code (including for commercial purposes), as long as the original copyright notice is included. It's provided without warranty.
+---
+
+## Acknowledgments
+
+- Icons by [Tabler Icons](https://tabler.io/icons)
+- UI components styled with [DaisyUI](https://daisyui.com)
+- Inspired by the everyday git workflow developers already know
+
+---
+
+## Show Your Support
+
+If you found this project interesting or useful, consider giving it a ⭐ on [GitHub](https://github.com/SanketHajare44/pullRequest) — it helps others discover it too.
+
+---
+
+## Author
+
+<div align="center">
+
+**Sanket Hajare**
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/SanketHajare44)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-000000?style=flat-square&logo=vercel&logoColor=white)](https://pullrequest-roan.vercel.app)
+
+</div>
