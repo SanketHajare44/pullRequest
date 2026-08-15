@@ -128,7 +128,7 @@ requestRouter.post(
 // =====================================
 
 requestRouter.post(
-    "/request/review/:status/:requestId",
+    "/request/reviews/:status/:requestId",
     userAuth,
     async (req, res) => {
         try {
