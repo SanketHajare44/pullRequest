@@ -142,8 +142,6 @@ flowchart LR
     B -- Mongoose ODM --> C[(MongoDB)]
 ```
 
-> GitHub renders Mermaid diagrams natively in `README.md`. If you're viewing this somewhere that doesn't support Mermaid, see the plain-text version below.
-
 <details>
 <summary>Plain-text version</summary>
 
