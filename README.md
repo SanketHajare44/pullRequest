@@ -1,83 +1,30 @@
 <div align="center">
 
-# PullRequest
+<h1>pullRequest</h1>
 
-### Developer Networking & Real-Time Communication Platform
+<p><strong>A developer networking platform: discover other developers, send a connection request, and chat in real time once it's merged.</strong></p>
 
-<p>
-  A full-stack platform where developers can discover other developers,
-  build connections, manage requests, and communicate through real-time chat.
-</p>
+[![Live Demo](https://img.shields.io/badge/live-pullrequest--roan.vercel.app-d9663d?style=flat&labelColor=15191c)](https://pullrequest-roan.vercel.app)
+[![License](https://img.shields.io/badge/license-MIT-d9663d?style=flat&labelColor=15191c)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-d9663d?style=flat&labelColor=15191c)](#contributing)
 
-<p>
-<a href="https://pullrequest-roan.vercel.app">
-<strong>Live Demo →</strong>
-</a>
-&nbsp;&nbsp;·&nbsp;&nbsp;
-<a href="https://github.com/SanketHajare44/pullRequest">
-<strong>Repository</strong>
-</a>
-</p>
-
-<br />
-
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-24-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.IO-4-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
-
-<br />
-
-![License](https://img.shields.io/github/license/SanketHajare44/pullRequest?style=flat-square)
-![Issues](https://img.shields.io/github/issues/SanketHajare44/pullRequest?style=flat-square)
-![Last Commit](https://img.shields.io/github/last-commit/SanketHajare44/pullRequest?style=flat-square)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
+<a href="https://pullrequest-roan.vercel.app"><strong>Visit the app →</strong></a>
 
 </div>
 
 ---
 
-## Overview
+## What this is
 
-PullRequest is a full-stack developer networking platform built to help developers discover people with similar interests, create professional connections, and communicate through real-time messaging.
+A full-stack developer networking app built around a simple metaphor: connecting with someone is like opening a pull request, and once they accept, it's merged. Under that idea sits a real product — a browsable feed, a request/accept flow, a connections list, and real-time chat — built on a React frontend and a Node/Express API backed by MongoDB.
 
-The application provides a complete user flow:
+## Highlights
 
-```text
-Create Account
-      │
-      ▼
-    Login
-      │
-      ▼
-Developer Feed
-      │
-      ├───────────────┐
-      │               │
-      ▼               ▼
- Interested        Ignored
-      │
-      ▼
-Connection Request
-      │
-      ├───────────────┐
-      │               │
-      ▼               ▼
-   Accepted        Rejected
-      │
-      ▼
-Connections
-      │
-      ▼
-    Chat
-      │
-      ▼
-Real-Time Messaging
-```
-
----
+- **A request/merge connection model**, not a generic "match." Sending interest opens a request; the other person accepts or rejects it; an accepted request becomes a connection you can message.
+- **Real-time chat over Socket.IO**, not polling — messages arrive instantly in an open chat room between two connected users.
+- **Cookie-based session auth** with an HTTP-only JWT cookie, used to authenticate both REST calls and the socket handshake, so there's one source of truth for "who's logged in."
+- **A single connections store in Redux**, populated once on login and read by every page (Feed, Connections, Requests, Chat) — no page fetches its own duplicate copy of the same data.
+- **Consistent UI language throughout**, styled with Tailwind and DaisyUI so the whole app follows one theme rather than a mix of ad hoc styles.
 
 ## Screenshots
 
@@ -92,51 +39,18 @@ Real-Time Messaging
 </tr>
 </table>
 
+## Why this stack
 
----
-
-## Features
-
-- **Authentication** — Secure signup/login with cookie-based sessions
-- **Developer Feed** — Browse other developers' profiles one at a time
-- **Connection Requests** — Send, accept, or reject requests to connect
-- **Connections** — View and manage your accepted connections
-- **Real-Time Chat** — Message connections instantly via Socket.IO
-- **Profile Management** — Edit profile details and photo
-
----
-
-## Tech Stack
-
-<table>
-<tr>
-<td valign="top" width="50%">
-
-**Frontend**
-- React 19
-- Vite 7
-- Tailwind CSS + DaisyUI
-- Redux / React Redux
-- React Router
-- Axios
-- Socket.IO Client
-
-</td>
-<td valign="top" width="50%">
-
-**Backend**
-- Node.js 24
-- Express 5
-- MongoDB + Mongoose
-- Socket.IO
-- JSON Web Tokens (JWT)
-- bcrypt
-
-</td>
-</tr>
-</table>
-
----
+| Layer | Choice | Why |
+| --- | --- | --- |
+| Frontend | **React 19 + Vite** | Fast dev server and build times, plain component model without extra framework conventions to work around. |
+| Styling | **Tailwind CSS + DaisyUI** | Utility classes for layout, DaisyUI component primitives (cards, dropdowns, modals) so the UI stays consistent without hand-rolling every component. |
+| State | **Redux / React Redux** | One shared store for user and connections state, read by multiple unrelated pages without prop-drilling or duplicate fetches. |
+| Routing | **React Router** | Nested routes via a shared layout (`Body`) so NavBar and Footer wrap every page without repeating them. |
+| Real-time | **Socket.IO** | Bidirectional events for chat delivery, with reconnection handling that raw WebSockets don't give you for free. |
+| Backend | **Node.js + Express** | Minimal, well-understood REST layer for auth, profile, feed, and request/connection endpoints. |
+| Database | **MongoDB + Mongoose** | Flexible schema for evolving profile fields, straightforward relationships for requests and connections via referenced documents. |
+| Auth | **JWT in an HTTP-only cookie** | Session token isn't accessible to client-side JS, reducing XSS exposure, while still working for both REST and the socket handshake. |
 
 ## Architecture
 
@@ -147,7 +61,6 @@ flowchart LR
     A <-- WebSocket / Socket.IO --> B
     B -- Mongoose ODM --> C[(MongoDB)]
 ```
-
 
 <details>
 <summary>Plain-text version</summary>
@@ -160,13 +73,7 @@ Backend (Node + Express) --> MongoDB (Mongoose ODM)
 
 </details>
 
-- **REST API** handles auth, profile, feed, requests, and connections
-- **Socket.IO** handles real-time chat delivery between connected users
-- **JWT stored in an HTTP-only cookie** authenticates both REST requests and the socket handshake
-
----
-
-## Project Structure
+## Project structure
 
 ```
 pullRequest/
@@ -199,69 +106,40 @@ pullRequest/
         └── app.js                  # Express app entry point
 ```
 
----
+## API reference
 
-## API Reference
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| POST | `/signup` | Register a new user |
+| POST | `/login` | Log in, sets auth cookie |
+| POST | `/logout` | Clear auth cookie |
+| GET | `/profile/view` | Get the logged-in user's profile |
+| PATCH | `/profile/edit` | Update profile details |
+| GET | `/feed` | Get developer profiles to browse |
+| POST | `/request/send/:status/:userId` | Send interested/ignored request |
+| POST | `/request/review/:status/:requestId` | Accept/reject an incoming request |
+| GET | `/user/requests/received` | List incoming connection requests |
+| GET | `/user/connections` | List accepted connections |
 
-| Method | Endpoint                          | Description                          |
-|--------|------------------------------------|----------------------------------------|
-| POST   | `/signup`                          | Register a new user                    |
-| POST   | `/login`                           | Log in, sets auth cookie               |
-| POST   | `/logout`                          | Clear auth cookie                      |
-| GET    | `/profile/view`                    | Get the logged-in user's profile       |
-| PATCH  | `/profile/edit`                    | Update profile details                 |
-| GET    | `/feed`                            | Get developer profiles to browse       |
-| POST   | `/request/send/:status/:userId`    | Send interested/ignored request        |
-| POST   | `/request/review/:status/:requestId` | Accept/reject an incoming request     |
-| GET    | `/user/requests/received`          | List incoming connection requests      |
-| GET    | `/user/connections`                | List accepted connections              |
+**Socket.IO events**
 
-### Socket.IO Events
+| Event | Direction | Description |
+| --- | --- | --- |
+| `joinChat` | Client → Server | Join a chat room with a connection |
+| `sendMessage` | Client → Server | Send a new message |
+| `messageReceived` | Server → Client | Broadcast a new message to the room |
 
-| Event            | Direction        | Description                          |
-|-------------------|-------------------|----------------------------------------|
-| `joinChat`         | Client → Server    | Join a chat room with a connection     |
-| `sendMessage`       | Client → Server    | Send a new message                     |
-| `messageReceived`    | Server → Client     | Broadcast a new message to the room    |
-
----
-
-## Environment Variables
-
-| Variable      | Location  | Description                                  | Example                              |
-|----------------|------------|------------------------------------------------|----------------------------------------|
-| `PORT`          | backend    | Port the Express server runs on               | `3000`                                 |
-| `MONGO_URI`      | backend    | MongoDB connection string                      | `mongodb://localhost:27017/pullrequest` |
-| `JWT_SECRET`      | backend    | Secret used to sign auth tokens                | `a-long-random-string`                 |
-| `BASE_URL`         | frontend   | URL the frontend calls for the API             | `http://localhost:3000`                |
-
-> Never commit real `.env` values — keep a `.env.example` in each folder with placeholder values instead.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- MongoDB (local or Atlas connection string)
-- npm or yarn
-
-### 1. Clone the repository
+## Running locally
 
 ```bash
 git clone https://github.com/SanketHajare44/pullRequest.git
 cd pullRequest
-```
 
-### 2. Install dependencies
-
-```bash
 cd backend && npm install
 cd ../frontend && npm install
 ```
 
-### 3. Configure environment variables
+Set environment variables:
 
 **`backend/.env`**
 ```env
@@ -275,119 +153,58 @@ JWT_SECRET=your_jwt_secret
 export const BASE_URL = "http://localhost:3000";
 ```
 
-### 4. Run the app
+Run both servers:
 
 ```bash
-# Terminal 1 — backend
-cd backend
-npm run dev
+# Terminal 1
+cd backend && npm run dev
 
-# Terminal 2 — frontend
-cd frontend
-npm run dev
+# Terminal 2
+cd frontend && npm run dev
 ```
 
-The app will be running at:
+The app runs at `http://localhost:5173`.
 
-```
-http://localhost:5173
-```
-
----
+| Variable | Location | Description |
+| --- | --- | --- |
+| `PORT` | backend | Port the Express server runs on |
+| `MONGO_URI` | backend | MongoDB connection string |
+| `JWT_SECRET` | backend | Secret used to sign auth tokens |
+| `BASE_URL` | frontend | URL the frontend calls for the API |
 
 ## Roadmap
 
-- [ ] Filter feed by tech stack / experience level
-- [ ] Push notifications for new requests and messages
-- [ ] Read receipts and typing indicators in chat
-- [ ] Mobile-responsive polish
-
----
+- Filter feed by tech stack / experience level
+- Push notifications for new requests and messages
+- Read receipts and typing indicators in chat
+- Mobile-responsive polish
 
 ## Contributing
 
-Contributions are welcome. To contribute:
+1. Fork the repository and create a branch: `git checkout -b feature/your-feature-name`
+2. Make your changes, following the existing code style (functional components, DaisyUI/Tailwind classes, existing folder structure)
+3. Commit with a clear message and open a pull request against `main`, describing what the change does and why
 
-1. **Fork** the repository
-2. **Create a branch** for your feature or fix
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. **Make your changes**, following the existing code style (functional components, DaisyUI/Tailwind classes, existing folder structure)
-4. **Commit** with a clear message
-   ```bash
-   git commit -m "Add: short description of change"
-   ```
-5. **Push** your branch and **open a Pull Request** against `main`, describing what the change does and why
-
-### Guidelines
-
-- Keep pull requests focused — one feature or fix per PR
-- Test your changes locally (both frontend and backend) before submitting
-- Don't commit `.env` files or secrets
-- Be respectful and constructive in code review discussions
-
-### Reporting Issues
-
-Found a bug or have a feature idea? Open an [issue](https://github.com/SanketHajare44/pullRequest/issues) with a clear title and, for bugs, steps to reproduce.
-
----
-
-## FAQ
-
-**Why "PullRequest"?**
-The name plays on the git term — sending a connection request is like opening a pull request, and accepting it "merges" you into each other's connections. It's branding built for a developer audience.
-
-**Does chat work in real time?**
-Yes — messaging uses Socket.IO over WebSockets, so messages appear instantly without needing to refresh.
-
-**Can I run this without MongoDB Atlas?**
-Yes, a local MongoDB instance works fine — just point `MONGO_URI` at your local connection string (e.g. `mongodb://localhost:27017/pullrequest`).
-
-**Is this production-ready?**
-Not yet — see [Terms & Conditions](#terms--conditions) below. It's currently a personal/portfolio project under active development.
-
----
+Keep pull requests focused on one feature or fix, test both frontend and backend locally before submitting, and never commit `.env` files or secrets. Found a bug or have an idea? Open an [issue](https://github.com/SanketHajare44/pullRequest/issues).
 
 ## Terms & Conditions
 
-By creating an account or using PullRequest, you agree to the following:
-
-- You must provide accurate profile information and are responsible for maintaining the confidentiality of your account credentials.
-- The platform is intended for professional networking between developers. Harassment, spam, impersonation, or abusive behavior toward other users is not permitted and may result in account suspension.
-- Content you post (profile details, messages) remains yours, but you grant the platform the right to store and display it as needed to provide the service.
-- The platform is provided "as is" during active development — features, availability, and data may change without notice.
-- This is currently a personal/portfolio project and is not intended for production use with sensitive data.
-
----
+By creating an account or using pullRequest, you agree to provide accurate profile information and keep your credentials confidential. The platform is for professional networking between developers — harassment, spam, impersonation, or abusive behavior toward other users isn't permitted and may result in suspension. Content you post remains yours; you grant the platform the right to store and display it to provide the service. This is a personal/portfolio project under active development, provided "as is," and not intended for production use with sensitive data.
 
 ## License
 
-This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- Icons by [Tabler Icons](https://tabler.io/icons)
-- UI components styled with [DaisyUI](https://daisyui.com)
-- Inspired by the everyday git workflow developers already know
-
----
-
-## Show Your Support
-
-If you found this project interesting or useful, consider giving it a ⭐ on [GitHub](https://github.com/SanketHajare44/pullRequest) — it helps others discover it too.
-
----
+MIT — see [LICENSE](LICENSE).
 
 ## Author
 
-<div align="center">
-
-**Sanket Hajare**
-
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/SanketHajare44)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-000000?style=flat-square&logo=vercel&logoColor=white)](https://pullrequest-roan.vercel.app)
-
-</div>
+<table>
+  <tr>
+    <td>
+      <strong>Sanket Hajare</strong>
+    </td>
+    <td>
+      <a href="https://pullrequest-roan.vercel.app">Live Demo</a> &middot;
+      <a href="https://github.com/SanketHajare44">GitHub</a>
+    </td>
+  </tr>
+</table>
